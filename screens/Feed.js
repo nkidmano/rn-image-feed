@@ -19,6 +19,9 @@ export default class Feed extends React.Component {
 
   static propTypes = {
     style: ViewPropTypes.style,
+    commentsForItem: PropTypes.objectOf(PropTypes.arrayOf(PropTypes.string))
+      .isRequired,
+    onPressComments: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
@@ -42,16 +45,19 @@ export default class Feed extends React.Component {
 
   renderContent = () => {
     const { loading, error, items } = this.state;
+    const { commentsForItem, onPressComments } = this.props;
 
-    if (loading) {
-      return <ActivityIndicator size="large" />;
-    }
+    if (loading) return <ActivityIndicator size="large" />;
 
-    if (error) {
-      return <Text>Error...</Text>;
-    }
+    if (error) return <Text>Error...</Text>;
 
-    return <CardList items={items} />;
+    return (
+      <CardList
+        items={items}
+        commentsForItem={commentsForItem}
+        onPressComments={onPressComments}
+      />
+    );
   };
 
   render() {
